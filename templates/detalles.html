@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+
+	<h4>Detalles</h4>
+ 
+<p><span class="txt_negrita">Titulo:</span> <br> {{noticia.titulo}}</p>
+<p><span class="txt_negrita">Usuario:</span> <br> {{noticia.username}}</p>
+<p><span class="txt_negrita">Fecha:</span> <br> {{noticia.fecha}}</p>
+<p><span class="txt_negrita">Imagen:</span> <br> <img src="{{ noticia.imagen.url }}" alt="{{noticia.titulo}}" class="img-fluid"> </p>
+<p><span class="txt_negrita">Tipo:</span> <br> {{noticia.tipo}}</p>
+<p><span class="txt_negrita">Texto:</span> <br> {{noticia.texto}}</p>
+ 
+<!-- Botón para volver a la vista principal (Home) -->
+<a href="../" type="submit" class="btn btn-primary">Volver</a>
+
+    {% endblock %}

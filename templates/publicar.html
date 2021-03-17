@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+
+	{% block content %}
+	<div style=margin: 50px;>
+
+	<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+		<br></br>
+
+		{{form|crispy}}
+
+		<br></br>
+        <input type="submit" name="" placeholder="ENVIAR">
+	</form>
+
+
+
+    {% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+
+
+    {% block content %}
+
+    <hr/>
+    <form method="POST">
+        {% csrf_token %}
+    Desde:<input type="date" name="fromdate">
+    Hasta:<input type="date" name="todate">
+    <input type="submit" name="Search">
+    <hr/>
+    {% for post in posts %}
+   
+ <!-- Main News Start-->
+        
+
+         <div class="tab-news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content">
+                            <div id="featured" class="container tab-pane active">
+                                <div class="tn-news">
+                                    <div class="tn-img">
+                                        <img src="{{ post.imagen.url }}" />
+                                    </div>
+                                    <div class="tn-title">
+                                        <a href="{% url 'noticias:noticia' post.pk %}">{{ post.titulo}}</a>
+                                        <br><br>
+                                        <p align="right" style="color:#C0B6B4">Publicado por: {{ post.username}}</p>
+                                        <p align="right" style="color:#C0B6B4">Fecha: {{ post.fecha}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+    </form>
+    {% endblock %}

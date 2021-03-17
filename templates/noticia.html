@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+
+
+
+    {% block content %}
+
+
+    <!-- Single News Start-->
+        <div class="single-news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="sn-container">
+                            <div class="sn-img">
+                                <img src="{{ noticia.imagen.url }}" />
+                            </div>
+                            <div class="sn-content">
+                                <h1 class="sn-title">{{ noticia.titulo }}</h1>
+                                <p>
+                                    {{ noticia.texto}}
+                                </p>
+                                
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Single News End-->
+        
+    <br><br>
+    <hr>
+
+    {% if user.is_authenticated %}
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btn btn-outline-success">  
+
+    </form>
+    {% endif %}
+
+    <div class="main-comment-section">
+        {{ comentario.count }} Comentario{{ comentarios|pluralize }}
+        {% for comen in comentario %}
+
+        <blockquote class="blockquote">
+  <p class="mb-0">{{ comen.texto }}</p>
+  <footer class="blockquote-footer">Usuario: <cite title="Source Title">{{ comen.username|capfirst }}</cite></footer>
+</blockquote>
+
+        {% endfor %}
+        
+
+    </div>
+    {% endblock %}
+        }

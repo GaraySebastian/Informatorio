@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+
+    {% block content %}
+    <div style=margin: 50px; align="center">
+
+    <form method="POST">{% csrf_token %}
+        <br></br>
+        <br></br>
+        
+        {{form.errors}}
+        <input type="text" name="username" placeholder="USUARIO">
+        <br></br>
+        <input type="password" name="password" placeholder="PASSWORD">
+        <br></br>
+        <br></br>
+        <input type="submit" name="" placeholder="ENVIAR">
+        <br></br>
+        <br></br>
+
+    </form>
+    </div>
+
+
+    {% endblock %}

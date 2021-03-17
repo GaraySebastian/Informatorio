@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+
+	{% block content %}
+
+	<!-- Form validations -->
+        
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Titulo</th>
+              <th>Fecha</th>
+              <th>Tipo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in object_list %}
+            {% if p.username == request.user %}
+
+            <tr>
+              <td><a href="{% url 'noticias:noticia' p.pk %}">{{ p.titulo}}</a></td>
+              <td>{{p.fecha}}</td>
+              <td>{{p.tipo}}</td>
+              <td><a class="btn btn-primary" href="{% url 'noticias:modificar' p.pk %}">Editar</a></td>
+              <td>
+                <form method="POST" action="{% url 'noticias:eliminar' p.pk %}">{% csrf_token %}
+                  <button class="btn btn-danger" type="submit">DAR DE BAJA</button>
+                </form>
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+
+        </table>
+        
+
+        <div class="row">
+            <div class="col-sm-12" align="center">
+              <section class="panel">
+                <div class="form-group">
+                  <div class="col-lg-offset-5 col-lg-10">
+                    <ul>
+                      <a class="btn btn-success btn-lg" href="{% url 'noticias:crear' %}" role="button">Agregar Nuevo</a>
+                  
+                  </ul>
+                  </div>
+                </div>
+              </section>
+            </div>
+        </div>
+   
+            
+        
+        <!-- page end-->
+
+
+    {% endblock %}

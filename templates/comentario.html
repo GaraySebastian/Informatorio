@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+
+<hr>
+{% for comentario in post.comentario.all %}
+    <div class="comment">
+        <div class="date">{{ comentario.fecha }}</div>
+        <strong>{{ comentario.username }}</strong>
+        <p>{{ comentario.texto|linebreaks }}</p>
+    </div>
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+
+{% endblock %}
