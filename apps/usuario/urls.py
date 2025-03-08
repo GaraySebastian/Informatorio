@@ -1,12 +1,8 @@
-from django.conf.urls import url
-
 from django.urls import path
 from . import views
-
 
 app_name = 'usuario'
 
 urlpatterns = [
-    path('registro/', views.Alta_Usuario.as_view(), name = 'registro'),
-   
+    path('registro/', views.Alta_Usuario.as_view(), name='registro'),
 ]

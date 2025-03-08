@@ -95,14 +95,16 @@ WSGI_APPLICATION = 'TPFINAL.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'sql_server.pyodbc',
-        'NAME':'TPFINAL',
-        'Trusted_Connection':'yes',
-        'HOST': 'localhost\\SQLEXPRESS',
-        'OPTIONS':{
-            'driver':'SQL Server Native Client 11.0',
-        }
-    },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'tpfinal'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+        'OPTIONS': {
+            'options': '-c timezone=UTC'
+        },
+    }
 }
 
 
@@ -139,13 +141,15 @@ CKEDITOR_CONFIGS = {
 
 LANGUAGE_CODE = 'es-ar'
 
-TIME_ZONE = 'America/Argentina/Buenos_Aires'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Static files (CSS, JavaScript, Images)
