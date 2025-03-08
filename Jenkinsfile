@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Clonar Repositorio') {
             steps {
-                git branch: 'main', credentialsId: 'github-credentials', url: "${REPO_URL}"
+                git branch: 'master', credentialsId: 'github-credentials', url: "${REPO_URL}"
             }
         }
 
