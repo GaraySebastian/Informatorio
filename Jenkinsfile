@@ -14,10 +14,18 @@ pipeline {
             }
         }
 
-        stage('Detener Contenedores Existentes') {
+        stage('Eliminar Contenedores Existentes') {
             steps {
                 script {
-                    sh 'docker-compose down || true'
+                    sh 'docker rm -f postgres_db || true'
+                }
+            }
+        }
+
+        stage('Limpiar contenedores huérfanos y redes') {
+            steps {
+                script {
+                    sh 'docker system prune -f || true'
                 }
             }
         }
