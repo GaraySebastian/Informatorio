@@ -17,7 +17,7 @@ pipeline {
         stage('Construir Imagen Docker') {
             steps {
                 script {
-                    sh 'docker-compose build'
+                    sh 'docker compose build'
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
         stage('Levantar Contenedores') {
             steps {
                 script {
-                    sh 'docker-compose up -d'
+                    sh 'docker compose up -d'
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
     post {
         always {
             script {
-                sh 'docker-compose logs > logs.txt'
+                sh 'docker compose logs > logs.txt'
             }
         }
         failure {
