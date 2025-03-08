@@ -14,6 +14,14 @@ pipeline {
             }
         }
 
+        stage('Detener Contenedores Existentes') {
+            steps {
+                script {
+                    sh 'docker-compose down || true'
+                }
+            }
+        }
+
         stage('Construir Imagen Docker') {
             steps {
                 script {
