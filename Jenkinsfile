@@ -14,6 +14,14 @@ pipeline {
             }
         }
 
+        stage('Eliminar Contenedor Django') {
+            steps {
+                script {
+                    sh 'docker rm -f django_app || true'
+                }
+            }
+        }
+
         stage('Eliminar Contenedores Existentes') {
             steps {
                 script {
@@ -22,7 +30,7 @@ pipeline {
             }
         }
 
-        stage('Limpiar contenedores huérfanos y redes') {
+        stage('Limpiar contenedores y redes') {
             steps {
                 script {
                     sh 'docker system prune -f || true'
