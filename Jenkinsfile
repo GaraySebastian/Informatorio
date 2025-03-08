@@ -57,7 +57,15 @@ pipeline {
         stage('Verificar Contenedor') {
             steps {
                 script {
-                    sh 'docker ps | grep django_app'
+                    sh 'docker ps -a | grep django_app'
+                }
+            }
+        }
+
+        stage('Verificar Logs del Contenedor') {
+            steps {
+                script {
+                    sh 'docker logs django_app || true'
                 }
             }
         }
