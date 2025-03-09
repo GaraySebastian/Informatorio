@@ -24,23 +24,23 @@ pipeline {
             }
         }
 
-        stage('Verificar Contenedores Activos') {
-            steps {
-                script {
-                    // Verificar si los contenedores ya están corriendo
-                    def containersRunning = sh(script: "docker ps -q --filter 'name=${DB_CONTAINER_NAME}' --filter 'name=${CONTAINER_NAME}'", returnStdout: true).trim()
-                    if (containersRunning) {
-                        echo "Los contenedores ya están corriendo. No se levantarán nuevamente."
-                    } else {
-                        echo "Los contenedores no están corriendo. Se levantarán ahora."
-                        // Levantar el contenedor de la base de datos (PostgreSQL)
-                        sh 'docker run --name ${DB_CONTAINER_NAME} -d -e POSTGRES_DB=${DB_NAME} -e POSTGRES_USER=${DB_USER} -e POSTGRES_PASSWORD=${DB_PASSWORD} -p 5432:5432 postgres:15'
-                        // Levantar el contenedor de la aplicación Django
-                        sh 'docker run --name ${CONTAINER_NAME} --link ${DB_CONTAINER_NAME}:db -d -p 8000:8000 ${IMAGE_NAME}:${BUILD_TAG}'
-                    }
-                }
-            }
-        }
+        // stage('Verificar Contenedores Activos') {
+        //     steps {
+        //         script {
+        //             // Verificar si los contenedores ya están corriendo
+        //             def containersRunning = sh(script: "docker ps -q --filter 'name=${DB_CONTAINER_NAME}' --filter 'name=${CONTAINER_NAME}'", returnStdout: true).trim()
+        //             if (containersRunning) {
+        //                 echo "Los contenedores ya están corriendo. No se levantarán nuevamente."
+        //             } else {
+        //                 echo "Los contenedores no están corriendo. Se levantarán ahora."
+        //                 // Levantar el contenedor de la base de datos (PostgreSQL)
+        //                 sh 'docker run --name ${DB_CONTAINER_NAME} -d -e POSTGRES_DB=${DB_NAME} -e POSTGRES_USER=${DB_USER} -e POSTGRES_PASSWORD=${DB_PASSWORD} -p 5432:5432 postgres:15'
+        //                 // Levantar el contenedor de la aplicación Django
+        //                 sh 'docker run --name ${CONTAINER_NAME} --link ${DB_CONTAINER_NAME}:db -d -p 8000:8000 ${IMAGE_NAME}:${BUILD_TAG}'
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Ejecutar Tests') {
             steps {
