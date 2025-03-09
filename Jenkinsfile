@@ -14,29 +14,29 @@ pipeline {
             }
         }
 
-        stage('Eliminar Contenedor Django') {
-            steps {
-                script {
-                    sh 'docker rm -f django_app || true'
-                }
-            }
-        }
+        // stage('Eliminar Contenedor Django') {
+        //     steps {
+        //         script {
+        //             sh 'docker rm -f django_app || true'
+        //         }
+        //     }
+        // }
 
-        stage('Eliminar Contenedores Existentes') {
-            steps {
-                script {
-                    sh 'docker rm -f postgres_db || true'
-                }
-            }
-        }
+        // stage('Eliminar Contenedores Existentes') {
+        //     steps {
+        //         script {
+        //             sh 'docker rm -f postgres_db || true'
+        //         }
+        //     }
+        // }
 
-        stage('Limpiar contenedores y redes') {
-            steps {
-                script {
-                    sh 'docker system prune -f || true'
-                }
-            }
-        }
+        // stage('Limpiar contenedores y redes') {
+        //     steps {
+        //         script {
+        //             sh 'docker system prune -f || true'
+        //         }
+        //     }
+        // }
 
         stage('Construir Imagen Docker') {
             steps {
