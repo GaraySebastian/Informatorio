@@ -4,6 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "django_app"
         CONTAINER_NAME = "django_app"
+        DB_CONTAINER_NAME = "postgres_db"
         REPO_URL = "https://github.com/GaraySebastian/Informatorio.git"
     }
 
@@ -17,7 +18,8 @@ pipeline {
         stage('Construir Imagen Docker') {
             steps {
                 script {
-                    sh 'docker-compose build'
+                    // Construir la imagen de Docker directamente
+                    sh 'docker build -t ${IMAGE_NAME}:${BUILD_TAG} .'
                 }
             }
         }
@@ -25,12 +27,16 @@ pipeline {
         stage('Verificar Contenedores Activos') {
             steps {
                 script {
-                    def containersRunning = sh(script: "docker ps -q --filter 'name=postgres_db' --filter 'name=django_app'", returnStdout: true).trim()
+                    // Verificar si los contenedores ya están corriendo
+                    def containersRunning = sh(script: "docker ps -q --filter 'name=${DB_CONTAINER_NAME}' --filter 'name=${CONTAINER_NAME}'", returnStdout: true).trim()
                     if (containersRunning) {
                         echo "Los contenedores ya están corriendo. No se levantarán nuevamente."
                     } else {
                         echo "Los contenedores no están corriendo. Se levantarán ahora."
-                        sh 'docker-compose up -d'
+                        // Levantar el contenedor de la base de datos (PostgreSQL)
+                        sh 'docker run --name ${DB_CONTAINER_NAME} -d -e POSTGRES_DB=${DB_NAME} -e POSTGRES_USER=${DB_USER} -e POSTGRES_PASSWORD=${DB_PASSWORD} -p 5432:5432 postgres:15'
+                        // Levantar el contenedor de la aplicación Django
+                        sh 'docker run --name ${CONTAINER_NAME} --link ${DB_CONTAINER_NAME}:db -d -p 8000:8000 ${IMAGE_NAME}:${BUILD_TAG}'
                     }
                 }
             }
@@ -39,9 +45,27 @@ pipeline {
         stage('Ejecutar Tests') {
             steps {
                 script {
-                    sh 'docker-compose run --rm web python manage.py test'
+                    // Ejecutar los tests dentro del contenedor ya levantado
+                    def containersRunning = sh(script: "docker ps -q --filter 'name=${CONTAINER_NAME}'", returnStdout: true).trim()
+                    if (containersRunning) {
+                        sh "docker exec ${CONTAINER_NAME} python manage.py test"
+                    } else {
+                        sh 'docker run --rm ${IMAGE_NAME}:${BUILD_TAG} python manage.py test'
+                    }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            script {
+                // Limpiar los contenedores después de los tests
+                sh 'docker rm -f ${CONTAINER_NAME} ${DB_CONTAINER_NAME}'
+            }
+        }
+        failure {
+            mail to: 'seba.c.garay@gmail.com', subject: 'Fallo en Jenkins', body: 'El despliegue falló. Verifica Jenkins.'
         }
     }
 }
