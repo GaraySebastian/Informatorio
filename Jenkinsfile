@@ -22,10 +22,16 @@ pipeline {
             }
         }
 
-        stage('Levantar Servicios') {
+        stage('Verificar Contenedores Activos') {
             steps {
                 script {
-                    sh 'docker-compose up -d'
+                    def containersRunning = sh(script: "docker ps -q --filter 'name=postgres_db' --filter 'name=django_app'", returnStdout: true).trim()
+                    if (containersRunning) {
+                        echo "Los contenedores ya están corriendo. No se levantarán nuevamente."
+                    } else {
+                        echo "Los contenedores no están corriendo. Se levantarán ahora."
+                        sh 'docker-compose up -d'
+                    }
                 }
             }
         }
