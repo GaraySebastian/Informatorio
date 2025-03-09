@@ -69,6 +69,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Ejecutar Tests') {
+            steps {
+                script {
+                    sh 'docker exec django_app python manage.py test'
+                }
+            }
+        }
     }
 
     post {
